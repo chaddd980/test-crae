@@ -1,15 +1,15 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import path from 'path'
-
-const staticFiles = express.static(path.join(__dirname, '../../client/build'))
 const app = express()
 
-app.use(staticFiles)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
 const router = express.Router()
+
+const staticFiles = express.static(path.join(__dirname, '../../client/build'))
+app.use(staticFiles)
 
 router.get('/cities', (req, res) => {
   const cities = [
@@ -21,8 +21,11 @@ router.get('/cities', (req, res) => {
 })
 
 app.use(router)
-app.set('port', (process.env.PORT || 3001))
 
+// any routes not picked up by the server api will be handled by the react router
+app.use('/*', staticFiles)
+
+app.set('port', (process.env.PORT || 3001))
 app.listen(app.get('port'), () => {
   console.log(`Listening on ${app.get('port')}`)
 })
