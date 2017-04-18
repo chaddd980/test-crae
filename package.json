@@ -19,5 +19,4 @@
     "start": "concurrently \"cd client && PORT=3000 yarn start\" \"cd server && PORT=3001 yarn start\"",
     "start:prod": "cd server && yarn start:prod"
   }
-  }
 }
